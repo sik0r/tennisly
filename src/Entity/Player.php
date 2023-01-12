@@ -7,10 +7,14 @@ namespace App\Entity;
 use App\Enum\GenderEnum;
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\Timestampable;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
 class Player
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -92,5 +96,10 @@ class Player
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function __toString(): string
+    {
+        return "$this->firstName $this->lastName";
     }
 }
