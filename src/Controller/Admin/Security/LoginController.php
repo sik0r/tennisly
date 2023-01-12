@@ -24,4 +24,10 @@ class LoginController extends AbstractController
             'error' => $error,
         ]);
     }
+
+    #[Route('/admin/logout', 'admin_logout')]
+    public function logout(): Response
+    {
+        throw new \Exception('Logged out');
+    }
 }

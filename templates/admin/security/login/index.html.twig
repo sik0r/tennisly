@@ -2,6 +2,7 @@
 {% set remember_me_enabled = true %}
 {% set forgot_password_enabled = true %}
 {% set forgot_password_path = path('admin_forgot_password_request') %}
+{% set target_path = path('admin_dashboard') %}
 
 {% extends '@EasyAdmin/page/login.html.twig' %}
 
