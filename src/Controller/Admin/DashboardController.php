@@ -3,6 +3,10 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Admin;
+use App\Entity\League\PlayerLeague;
+use App\Entity\League\TeamLeague;
+use App\Entity\Match\PlayerMatch;
+use App\Entity\Match\TeamMatch;
 use App\Entity\Player;
 use App\Entity\Season;
 use App\Entity\Team;
@@ -32,7 +36,11 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Admin', 'fa fa-user', Admin::class)
             ->setPermission('ROLE_SUPER_ADMIN');
         yield MenuItem::linkToCrud('Season', '', Season::class);
+        yield MenuItem::linkToCrud('Player league', '', PlayerLeague::class);
+        yield MenuItem::linkToCrud('Team league', '', TeamLeague::class);
         yield MenuItem::linkToCrud('Player', '', Player::class);
         yield MenuItem::linkToCrud('Team', '', Team::class);
+        yield MenuItem::linkToCrud('Team match', '', TeamMatch::class);
+        yield MenuItem::linkToCrud('Player match', '', PlayerMatch::class);
     }
 }

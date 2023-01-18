@@ -81,6 +81,11 @@ class Player
         return $this;
     }
 
+    public function getFullName(): string
+    {
+        return "$this->firstName $this->lastName";
+    }
+
     public function getGender(): ?string
     {
         return $this->gender;
@@ -100,6 +105,6 @@ class Player
 
     public function __toString(): string
     {
-        return "$this->firstName $this->lastName";
+        return $this->getFullName();
     }
 }
