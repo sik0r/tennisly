@@ -14,11 +14,6 @@ abstract class League
 {
     use TimestampableEntity;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
-
     #[ORM\Column]
     private string $name;
 
@@ -29,9 +24,10 @@ abstract class League
     #[ORM\JoinColumn(nullable: false)]
     private Season $season;
 
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getName(): string
@@ -62,10 +58,5 @@ abstract class League
     public function setSeason(Season $season): void
     {
         $this->season = $season;
-    }
-
-    public function __toString(): string
-    {
-        return $this->name;
     }
 }

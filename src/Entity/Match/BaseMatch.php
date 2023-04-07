@@ -12,13 +12,23 @@ abstract class BaseMatch
 {
     use TimestampableEntity;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
+    #[ORM\Column(type: 'json', options: ['default' => '[]'])]
+    private array $points;
 
-    public function getId(): int
+    public function __construct()
     {
-        return $this->id;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+        $this->points = [];
+    }
+
+    public function getPoints(): array
+    {
+        return $this->points;
+    }
+
+    public function setPoints(array $points): void
+    {
+        $this->points = $points;
     }
 }

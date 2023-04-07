@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Admin;
@@ -32,15 +34,23 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Admin', 'fa fa-user', Admin::class)
+        yield MenuItem::linkToDashboard('admin.label.sidebar.dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('admin.label.sidebar.admin', 'fa fa-user', Admin::class)
             ->setPermission('ROLE_SUPER_ADMIN');
-        yield MenuItem::linkToCrud('Season', '', Season::class);
-        yield MenuItem::linkToCrud('Player league', '', PlayerLeague::class);
-        yield MenuItem::linkToCrud('Team league', '', TeamLeague::class);
-        yield MenuItem::linkToCrud('Player', '', Player::class);
-        yield MenuItem::linkToCrud('Team', '', Team::class);
-        yield MenuItem::linkToCrud('Team match', '', TeamMatch::class);
-        yield MenuItem::linkToCrud('Player match', '', PlayerMatch::class);
+        yield MenuItem::linkToCrud('admin.label.sidebar.player', 'fa-solid fa-user', Player::class);
+        yield MenuItem::linkToCrud('admin.label.sidebar.team', 'fa-solid fa-users', Team::class);
+        yield MenuItem::linkToCrud('admin.label.sidebar.season', 'fa-solid fa-trophy', Season::class);
+        yield MenuItem::subMenu('admin.label.sidebar.league')->setSubItems(
+            [
+                MenuItem::linkToCrud('admin.label.sidebar.player_league', 'fa-solid fa-user', PlayerLeague::class),
+                MenuItem::linkToCrud('admin.label.sidebar.team_league', 'fa-solid fa-users', TeamLeague::class),
+            ]
+        );
+        yield MenuItem::subMenu('admin.label.sidebar.matches')->setSubItems(
+            [
+                MenuItem::linkToCrud('admin.label.sidebar.player_matches', 'fa-solid fa-user', PlayerMatch::class),
+                MenuItem::linkToCrud('admin.label.sidebar.team_matches', 'fa-solid fa-users', TeamMatch::class),
+            ]
+        );
     }
 }

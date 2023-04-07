@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Match;
 
+use App\Entity\Id;
 use App\Entity\League\TeamLeague;
 use App\Entity\Team;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\UniqueConstraint(columns: ['league_id', 'home_team_id', 'away_team_id'])]
 class TeamMatch extends BaseMatch
 {
+    use Id;
+
     #[ORM\ManyToOne(targetEntity: Team::class, cascade: ['remove'], fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private Team $homeTeam;

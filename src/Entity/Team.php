@@ -11,12 +11,8 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 class Team
 {
+    use Id;
     use TimestampableEntity;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -28,9 +24,11 @@ class Team
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Player $secondPlayer = null;
-    public function getId(): ?int
+
+    public function __construct()
     {
-        return $this->id;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getName(): ?string

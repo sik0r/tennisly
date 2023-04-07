@@ -4,21 +4,15 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Enum\GenderEnum;
 use App\Repository\PlayerRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Timestampable\Traits\Timestampable;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: PlayerRepository::class)]
 class Player
 {
+    use Id;
     use TimestampableEntity;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 255, unique: true)]
     private ?string $email = null;
@@ -37,12 +31,9 @@ class Player
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
         $this->password = uniqid();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getEmail(): ?string
@@ -101,10 +92,5 @@ class Player
     public function getPassword(): string
     {
         return $this->password;
-    }
-
-    public function __toString(): string
-    {
-        return $this->getFullName();
     }
 }

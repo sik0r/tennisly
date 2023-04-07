@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity\Match;
 
+use App\Entity\Id;
 use App\Entity\League\PlayerLeague;
 use App\Entity\Player;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,15 +13,17 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\UniqueConstraint(columns: ['league_id', 'home_player_id', 'away_player_id'])]
 class PlayerMatch extends BaseMatch
 {
-    #[ORM\ManyToOne(targetEntity: Player::class, cascade: ['remove'], fetch: 'EAGER')]
+    use Id;
+
+    #[ORM\ManyToOne(targetEntity: Player::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private Player $homePlayer;
 
-    #[ORM\ManyToOne(targetEntity: Player::class, cascade: ['remove'], fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Player::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private Player $awayPlayer;
 
-    #[ORM\ManyToOne(targetEntity: PlayerLeague::class, cascade: ['remove'], fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: PlayerLeague::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     private PlayerLeague $league;
 

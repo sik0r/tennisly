@@ -11,12 +11,8 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity(repositoryClass: SeasonRepository::class)]
 class Season
 {
+    use Id;
     use TimestampableEntity;
-
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -24,9 +20,10 @@ class Season
     #[ORM\Column]
     private bool $isActive = false;
 
-    public function getId(): ?int
+    public function __construct()
     {
-        return $this->id;
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
     }
 
     public function getName(): ?string
