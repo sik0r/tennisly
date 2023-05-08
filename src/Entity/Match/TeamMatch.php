@@ -8,23 +8,28 @@ use App\Entity\Id;
 use App\Entity\League\TeamLeague;
 use App\Entity\Team;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\Entity]
 #[ORM\UniqueConstraint(columns: ['league_id', 'home_team_id', 'away_team_id'])]
+#[Gedmo\Loggable]
 class TeamMatch extends BaseMatch
 {
     use Id;
 
     #[ORM\ManyToOne(targetEntity: Team::class, cascade: ['remove'], fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Gedmo\Versioned]
     private Team $homeTeam;
 
     #[ORM\ManyToOne(targetEntity: Team::class, cascade: ['remove'], fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Gedmo\Versioned]
     private Team $awayTeam;
 
     #[ORM\ManyToOne(targetEntity: TeamLeague::class, cascade: ['remove'], fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Gedmo\Versioned]
     private TeamLeague $league;
 
     public function getHomeTeam(): Team

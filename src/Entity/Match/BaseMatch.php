@@ -6,6 +6,7 @@ namespace App\Entity\Match;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\MappedSuperclass]
 abstract class BaseMatch
@@ -13,6 +14,7 @@ abstract class BaseMatch
     use TimestampableEntity;
 
     #[ORM\Column(type: 'json', options: ['default' => '[]'])]
+    #[Gedmo\Versioned]
     private array $points;
 
     public function __construct()
