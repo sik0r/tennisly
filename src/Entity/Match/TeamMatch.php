@@ -17,17 +17,17 @@ class TeamMatch extends BaseMatch
 {
     use Id;
 
-    #[ORM\ManyToOne(targetEntity: Team::class, cascade: ['remove'], fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Team::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     #[Gedmo\Versioned]
     private Team $homeTeam;
 
-    #[ORM\ManyToOne(targetEntity: Team::class, cascade: ['remove'], fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: Team::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     #[Gedmo\Versioned]
     private Team $awayTeam;
 
-    #[ORM\ManyToOne(targetEntity: TeamLeague::class, cascade: ['remove'], fetch: 'EAGER')]
+    #[ORM\ManyToOne(targetEntity: TeamLeague::class, fetch: 'EAGER')]
     #[ORM\JoinColumn(nullable: false)]
     #[Gedmo\Versioned]
     private TeamLeague $league;
