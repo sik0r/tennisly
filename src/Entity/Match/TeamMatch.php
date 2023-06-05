@@ -61,4 +61,29 @@ class TeamMatch extends BaseMatch
     {
         $this->league = $league;
     }
+
+    public function getLeagueId(): int
+    {
+        return $this->league->getId();
+    }
+
+    public function getHomeCompetitorName(): string
+    {
+        return $this->homeTeam->getName();
+    }
+
+    public function getHomeCompetitorId(): string
+    {
+        return (string)$this->homeTeam->getId();
+    }
+
+    public function getAwayCompetitorName(): string
+    {
+        return $this->awayTeam->getName();
+    }
+
+    public function getAwayCompetitorId(): string
+    {
+        return (string)$this->awayTeam->getId();
+    }
 }

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Entity\Match;
 
+use App\Entity\Standings\MatchInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 #[ORM\MappedSuperclass]
-abstract class BaseMatch
+abstract class BaseMatch implements MatchInterface
 {
     use TimestampableEntity;
 

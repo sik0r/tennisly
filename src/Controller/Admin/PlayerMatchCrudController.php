@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\Application\CompletedMatch\CompletedMatchCommand;
 use App\Entity\Match\PlayerMatch;
-use App\Form\Admin\Types\Match\SetType;
+use App\Form\Admin\Types\Match\ResultType;
+use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -13,12 +15,38 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PlayerMatchCrudController extends AbstractCrudController
 {
+    public function __construct(private readonly MessageBusInterface $messageBus)
+    {
+    }
+
     public static function getEntityFqcn(): string
     {
         return PlayerMatch::class;
+    }
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param PlayerMatch $entityInstance
+     * @return void
+     */
+    public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        parent::updateEntity($entityManager, $entityInstance);
+        $this->messageBus->dispatch(
+            new CompletedMatchCommand($entityInstance->getId(), $entityInstance->getLeague()->getId())
+        );
+    }
+
+    public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        parent::persistEntity($entityManager, $entityInstance);
+        $this->messageBus->dispatch(
+            new CompletedMatchCommand($entityInstance->getId(), $entityInstance->getLeague()->getId())
+        );
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -41,7 +69,7 @@ class PlayerMatchCrudController extends AbstractCrudController
 
         $actions->update(
             Crud::PAGE_INDEX, Action::NEW,
-            fn (Action $action) => $action->setIcon('fa fa-plus')->setLabel('admin.action.add')
+            fn(Action $action) => $action->setIcon('fa fa-plus')->setLabel('admin.action.add')
         );
 
         return $actions;
@@ -60,7 +88,7 @@ class PlayerMatchCrudController extends AbstractCrudController
         yield DateTimeField::new('updatedAt', 'admin.label.updated_at')
             ->hideOnForm();
         yield CollectionField::new('points', 'admin.label.points')
-            ->setCustomOption(CollectionField::OPTION_ENTRY_TYPE, SetType::class)
+            ->setCustomOption(CollectionField::OPTION_ENTRY_TYPE, ResultType::class)
             ->hideOnIndex();
     }
 }

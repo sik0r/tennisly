@@ -1,0 +1,38 @@
+{% extends 'front_office/base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h1>Witaj!</h1>
+                <h2>Liga tennisa</h2>
+                <hr>
+{{ dump(standings) }}
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nazwa</th>
+                        <th scope="col">Punkty</th>
+                        <th scope="col">Mecze (W/P)</th>
+                        <th scope="col">Sety (W/P)</th>
+                        <th scope="col">Gemy (W/P)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, standing in standings %}
+                        <tr>
+                            <th scope="row">{{ key + 1 }}</th>
+                            <td>{{ standing.name }}</td>
+                            <td>{{ standing.points }}</td>
+                            <td>{{ standing.wonGames }} / {{ standing.lostGames }}</td>
+                            <td>{{ standing.wonSets }} / {{ standing.lostSets }}</td>
+                            <td>{{ standing.wonGems }} / {{ standing.lostGems }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
