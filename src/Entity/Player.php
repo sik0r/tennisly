@@ -93,4 +93,9 @@ class Player
     {
         return $this->password;
     }
+
+    public function __toString(): string
+    {
+        return $this->getFullName();
+    }
 }

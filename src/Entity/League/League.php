@@ -59,4 +59,9 @@ abstract class League
     {
         $this->season = $season;
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }

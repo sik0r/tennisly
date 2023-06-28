@@ -1,0 +1,50 @@
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nazwa</th>
+        <th scope="col">Punkty</th>
+        <th scope="col">Mecze (W/P)</th>
+        <th scope="col">Sety (W/P)</th>
+        <th scope="col">Gemy (W/P)</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for key, standing in standings %}
+        <tr>
+            <th scope="row">{{ key + 1 }}</th>
+            <td>{{ standing.name }}</td>
+            <td>{{ standing.points }}</td>
+            <td>{{ standing.wonGames }} / {{ standing.lostGames }}</td>
+            <td>{{ standing.wonSets }} / {{ standing.lostSets }}</td>
+            <td>{{ standing.wonGems }} / {{ standing.lostGems }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="container">
+    <h2>Rozegrane mecze</h2>
+    {% for key,match in matches %}
+        <div class="row" style="margin-top: 10px;">
+            <div class="accordion d-flex justify-content-center" id="accordion-matches">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-{{ key }}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ key }}" aria-expanded="true" aria-controls="{{ key }}">
+                            <p>{{ match.homeCompetitorName }} <strong> {{ match.homePlayerWins }} - {{ match.awayPlayerWins }} </strong> {{ match.awayCompetitorName }}</p>
+                        </button>
+                    </h2>
+                    <div id="{{ key }}" class="accordion-collapse collapse show" aria-labelledby="heading-{{ key }}" data-bs-parent="#accordion-matches">
+                        <div class="accordion-body">
+                            {% for set in match.points %}
+                                <div class="row">
+                                    <p>Numer setu <strong>{{ set.setNumber }}</strong></p>
+                                    <strong>{{ set.homeGems }} - {{ set.awayGems }}</strong>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

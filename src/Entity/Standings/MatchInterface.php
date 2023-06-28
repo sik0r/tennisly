@@ -10,7 +10,7 @@ interface MatchInterface
 {
     public function getId(): ?int;
 
-    public function getLeagueId(): int;
+    public function getLeagueId(): Uuid;
 
     public function getHomeCompetitorName(): string;
     public function getHomeCompetitorId(): string;

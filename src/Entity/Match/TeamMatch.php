@@ -9,10 +9,13 @@ use App\Entity\League\TeamLeague;
 use App\Entity\Team;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 #[ORM\UniqueConstraint(columns: ['league_id', 'home_team_id', 'away_team_id'])]
 #[Gedmo\Loggable]
+#[UniqueEntity(fields: ['league', 'homeTeam', 'awayTeam'], message: 'Mecz z wybranmi drużynami już istnieje.')]
 class TeamMatch extends BaseMatch
 {
     use Id;
@@ -62,7 +65,7 @@ class TeamMatch extends BaseMatch
         $this->league = $league;
     }
 
-    public function getLeagueId(): int
+    public function getLeagueId(): Uuid
     {
         return $this->league->getId();
     }

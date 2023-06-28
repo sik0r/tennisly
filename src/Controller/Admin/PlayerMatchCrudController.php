@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Admin;
 
 use App\Application\CompletedMatch\CompletedMatchCommand;
+use App\Application\DeletedMatch\DeletedMatchCommand;
 use App\Entity\Match\PlayerMatch;
 use App\Form\Admin\Types\Match\ResultType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,25 +29,34 @@ class PlayerMatchCrudController extends AbstractCrudController
         return PlayerMatch::class;
     }
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param PlayerMatch $entityInstance
-     * @return void
-     */
     public function updateEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        parent::updateEntity($entityManager, $entityInstance);
-        $this->messageBus->dispatch(
-            new CompletedMatchCommand($entityInstance->getId(), $entityInstance->getLeague()->getId())
-        );
+        $entityManager->wrapInTransaction(function (EntityManagerInterface $em) use ($entityInstance) {
+            parent::updateEntity($em, $entityInstance);
+            $this->messageBus->dispatch(
+                new CompletedMatchCommand($entityInstance->getId(), $entityInstance->getLeague()->getId(), 'single')
+            );
+        });
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        parent::persistEntity($entityManager, $entityInstance);
-        $this->messageBus->dispatch(
-            new CompletedMatchCommand($entityInstance->getId(), $entityInstance->getLeague()->getId())
-        );
+        $entityManager->wrapInTransaction(function (EntityManagerInterface $em) use ($entityInstance) {
+            parent::persistEntity($em, $entityInstance);
+            $this->messageBus->dispatch(
+                new CompletedMatchCommand($entityInstance->getId(), $entityInstance->getLeague()->getId(), 'single')
+            );
+        });
+    }
+
+    public function deleteEntity(EntityManagerInterface $entityManager, $entityInstance): void
+    {
+        $entityManager->wrapInTransaction(function (EntityManagerInterface $em) use ($entityInstance) {
+            $this->messageBus->dispatch(
+                new DeletedMatchCommand($entityInstance->getId(), $entityInstance->getLeague()->getId(), 'single')
+            );
+            parent::deleteEntity($em, $entityInstance);
+        });
     }
 
     public function configureCrud(Crud $crud): Crud

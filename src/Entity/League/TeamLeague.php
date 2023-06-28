@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Entity\League;
 
-use App\Entity\Id;
 use App\Entity\Team;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity]
 class TeamLeague extends League
 {
-    use Id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'NONE')]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private Uuid $id;
 
     #[ORM\JoinTable(name: 'leagues_teams')]
     #[ORM\JoinColumn(name: 'league_id', referencedColumnName: 'id')]
@@ -25,6 +28,12 @@ class TeamLeague extends League
     {
         parent::__construct();
         $this->teams = new ArrayCollection();
+        $this->id = Uuid::v7();
+    }
+
+    public function getId(): Uuid
+    {
+        return $this->id;
     }
 
     /**

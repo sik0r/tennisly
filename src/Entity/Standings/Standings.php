@@ -18,8 +18,8 @@ class Standings
     #[ORM\Column(type: 'uuid', unique: true)]
     private readonly Uuid $id;
 
-    #[ORM\Column(type: 'integer')]
-    private readonly int $leagueId;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private readonly Uuid $leagueId;
 
     #[ORM\Column(type: 'json')]
     private array $matches;
@@ -27,7 +27,7 @@ class Standings
     #[ORM\Column(type: 'json')]
     private array $standings;
 
-    public function __construct(Uuid $id, int $leagueId)
+    public function __construct(Uuid $id, Uuid $leagueId)
     {
         $this->id = $id;
         $this->leagueId = $leagueId;
@@ -35,9 +35,19 @@ class Standings
         $this->standings = [];
     }
 
-    public function getStandings(): array
+    public function standings(): array
     {
         return array_values($this->standings);
+    }
+
+    public function matches(): array
+    {
+        return array_values($this->matches);
+    }
+
+    public function getLeagueId(): Uuid
+    {
+        return $this->leagueId;
     }
 
     public function hasMatch(MatchInterface $match): bool
@@ -47,7 +57,7 @@ class Standings
 
     public function addMatch(MatchInterface $match): void
     {
-        if ($match->getLeagueId() !== $this->leagueId) {
+        if (!$this->leagueId->equals($match->getLeagueId())) {
             throw new \InvalidArgumentException('Match league id does not match aggregate league id');
         }
 
@@ -66,7 +76,7 @@ class Standings
 
     public function removeMatch(MatchInterface $match): void
     {
-        if ($match->getLeagueId() !== $this->leagueId) {
+        if (!$this->leagueId->equals($match->getLeagueId())) {
             throw new \InvalidArgumentException('Match league id does not match aggregate league id');
         }
 
