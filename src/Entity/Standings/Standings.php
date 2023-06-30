@@ -169,13 +169,19 @@ class Standings
         $standings[$match['awayCompetitorId']]['lostSets'] += $homeSets;
 
         if ($homeSets > $awaySets) {
-            $standings[$match['homeCompetitorId']]['points'] += 3;
+            $standings[$match['homeCompetitorId']]['points'] += 2;
             $standings[$match['homeCompetitorId']]['wonGames'] += 1;
             $standings[$match['awayCompetitorId']]['lostGames'] += 1;
+            if ($awaySets === 1) {
+                $standings[$match['awayCompetitorId']]['points'] += 1;
+            }
         } else {
-            $standings[$match['awayCompetitorId']]['points'] += 3;
+            $standings[$match['awayCompetitorId']]['points'] += 2;
             $standings[$match['awayCompetitorId']]['wonGames'] += 1;
             $standings[$match['homeCompetitorId']]['lostGames'] += 1;
+            if ($homeSets === 1) {
+                $standings[$match['homeCompetitorId']]['points'] += 1;
+            }
         }
 
         $standings[$match['homeCompetitorId']]['name'] = $match['homeCompetitorName'];
