@@ -7,6 +7,7 @@
         <th scope="col">Mecze (W/P)</th>
         <th scope="col">Sety (W/P)</th>
         <th scope="col">Gemy (W/P)</th>
+        <th scope="col">Bilans gemów</th>
     </tr>
     </thead>
     <tbody>
@@ -15,9 +16,10 @@
             <th scope="row">{{ key + 1 }}</th>
             <td>{{ standing.name }}</td>
             <td>{{ standing.points }}</td>
-            <td>{{ standing.wonGames }} / {{ standing.lostGames }}</td>
+            <td><strong>{{ standing.wonGames + standing.lostGames }}</strong>  ({{ standing.wonGames }} / {{ standing.lostGames }})</td>
             <td>{{ standing.wonSets }} / {{ standing.lostSets }}</td>
             <td>{{ standing.wonGems }} / {{ standing.lostGems }}</td>
+            <td>{{ standing.wonGems - standing.lostGems }}</td>
         </tr>
     {% endfor %}
     </tbody>
