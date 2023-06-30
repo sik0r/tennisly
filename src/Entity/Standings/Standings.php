@@ -194,7 +194,16 @@ class Standings
 
     private function sortStandings(array $standings): array
     {
+        //sort by general points and gem balance if points and gems are equal sort by sets
         usort($standings, function (array $a, array $b) {
+            if ($b['points'] === $a['points']) {
+                if (($b['wonGems'] - $b['lostGems']) === ($a['wonGems'] - $a['lostGems'])) {
+                    return $b['wonSets'] <=> $a['wonSets'];
+                }
+
+                return ($b['wonGems'] - $b['lostGems']) <=> ($a['wonGems'] - $a['lostGems']);
+            }
+
             return $b['points'] <=> $a['points'];
         });
 
