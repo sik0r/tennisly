@@ -40,8 +40,7 @@ jobs:
       run: composer install 
     - name: Create Database
       run: |
-        cd var && mkdir -p data
-        touch var/data/database.sqlite
+        cd var && mkdir -p data && touch database.sqlite
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DATABASE_URL: sqlite:///%kernel.project_dir%/var/data/database.sqlite
