@@ -41,6 +41,8 @@ jobs:
     - name: Create Database
       run: |
         cd var && mkdir -p data && touch database.sqlite
+    - name: create DB schema
+      run: php bin/console d:s:c --env=test
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       env:
         DATABASE_URL: sqlite:///%kernel.project_dir%/var/data/database.sqlite
